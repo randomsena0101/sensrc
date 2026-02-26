@@ -18,13 +18,12 @@ logging.basicConfig(
 # ----------------------------
 # Load configuration safely
 # ----------------------------
-API_ID = config("API_ID=36905571", cast=int)                # Your Telegram API_ID (number)
-API_HASH = config(API_HASH="36677bbab05f148b95f91b13dbc57ea1")                      # Your Telegram API_HASH (string)
-BOT_TOKEN = config(BOT_TOKEN="8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA")                    # Your Bot token from BotFather
-SESSION = config("SESSION")                        # Telethon session string for userbot
-FORCESUB = config(FORCESUB="aksjuatest", default="")          # Optional: channel to force subscription
-AUTH = config(AUTH=8204831161, cast=int, default=0)         # Optional: your Telegram user ID
-
+API_ID = config("API_ID", cast=int)
+API_HASH = config("API_HASH")
+BOT_TOKEN = config("BOT_TOKEN")
+SESSION = config("SESSION")
+FORCESUB = config("FORCESUB", default="")
+AUTH = config("AUTH", cast=int, default=0)
 # Validate critical credentials
 if not all([API_ID, API_HASH, BOT_TOKEN]):
     print("Missing critical credentials (API_ID/API_HASH/BOT_TOKEN). Exiting.")
