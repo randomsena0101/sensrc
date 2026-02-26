@@ -1,43 +1,78 @@
-#Github.com/Vasusen-code
-
-from pyrogram import Client
-
-from telethon.sessions import StringSession
-from telethon.sync import TelegramClient
-
+import logging, sys
 from decouple import config
-import logging, time, sys
+from pyrogram import Client as PyroClient
+from telethon import TelegramClient
+from telethon.sessions import StringSession
+import asyncio
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+# ----------------------------
+# Logging
+# ----------------------------
+logging.basicConfig(
+    format='[%(levelname)5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.INFO
+)
 
-# variables
-heroku config:set API_ID=36905571
-heroku config:set API_HASH="36677bbab05f148b95f91b13dbc57ea1"
-heroku config:set BOT_TOKEN="8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA"
-SESSION = config("SESSION", default=None)
-ORCESUB = config("FORCESUB", default="aksjuatest")
-AUTH = config("AUTH", default=8204831161, cast=int)
-
-bot = TelegramClient('bot', API_ID, API_HASH).start(bot_token=BOT_TOKEN) 
-
-userbot = Client("saverestricted", session_string=SESSION, api_hash=API_HASH, api_id=API_ID) 
-
+# ----------------------------
+# Load configuration safely
+# ----------------------------
 try:
-    userbot.start()
-except BaseException:
-    print("Userbot Error ! Have you added SESSION while deploying??")
-    sys.exit(1)
-
-Bot = Client(
-    "SaveRestricted",
-    bot_token=BOT_TOKEN, 
-    api_id=int(API_ID),
-    api_hash=API_HASH
-)    
-
-try:
-    Bot.start()
+    API_ID = config("36905571", cast=int)
+    API_HASH = config("36677bbab05f148b95f91b13dbc57ea1")
+    BOT_TOKEN = config("8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA")
+    SESSION = config("SESSION")
+    FORCESUB = config("aksjuatest", default="")
+    AUTH = config("8204831161", cast=int)
 except Exception as e:
-    print(e)
+    print(f"Configuration error: {e}")
     sys.exit(1)
+
+if not all([API_ID, API_HASH, BOT_TOKEN]):
+    print("Missing critical credentials (API_ID/API_HASH/BOT_TOKEN). Exiting.")
+    sys.exit(1)
+
+# ----------------------------
+# Start Telethon userbot
+# ----------------------------
+try:
+    userbot = TelegramClient(StringSession(SESSION), API_ID, API_HASH)
+except Exception as e:
+    print(f"Userbot init error: {e}")
+    sys.exit(1)
+
+async def start_userbot():
+    try:
+        await userbot.start()
+        print("Userbot started!")
+    except Exception:
+        print("Userbot start failed! Check SESSION string.")
+        sys.exit(1)
+
+# ----------------------------
+# Start Pyrogram bot
+# ----------------------------
+bot = PyroClient(
+    "SaveRestricted",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    bot_token=BOT_TOKEN
+)
+
+async def start_bot():
+    try:
+        await bot.start()
+        print("Bot started!")
+    except Exception as e:
+        print(f"Bot start failed: {e}")
+        sys.exit(1)
+
+# ----------------------------
+# Main entrypoint
+# ----------------------------
+async def main():
+    await asyncio.gather(start_userbot(), start_bot())
+    print("Both bot and userbot running!")
+    await asyncio.Future()  # Keeps event loop alive
+
+if __name__ == "__main__":
+    asyncio.run(main())
