@@ -13,8 +13,8 @@ logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s'
 
 # variables
 API_ID = config("API_ID", default=36905571, cast=int)
-API_HASH = config("API_HASH", default=36677bbab05f148b95f91b13dbc57ea1)
-BOT_TOKEN = config("BOT_TOKEN", default=8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA)
+API_HASH = config("API_HASH", default="36677bbab05f148b95f91b13dbc57ea1")
+BOT_TOKEN = config("BOT_TOKEN", default="8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA")
 SESSION = config("SESSION", default=None)
 FORCESUB = config("FORCESUB", default=aksjuatest)
 AUTH = config("AUTH", default=8204831161, cast=int)
