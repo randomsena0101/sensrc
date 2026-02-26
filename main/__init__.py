@@ -18,12 +18,14 @@ logging.basicConfig(
 # ----------------------------
 # Load configuration safely
 # ----------------------------
-API_ID = config("36905571", cast=int)
-API_HASH = config("36677bbab05f148b95f91b13dbc57ea1")
-BOT_TOKEN = config("8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA")
-SESSION = config("SESSION")
-FORCESUB = config("aksjuatest", default="")
-AUTH = config("8204831161", cast=int, default=0)
+from decouple import config
+
+API_ID = config("API_ID", cast=int)           # 36905571
+API_HASH = config("API_HASH")                 # 36677bbab05f148b95f91b13dbc57ea1
+BOT_TOKEN = config("BOT_TOKEN")               # 123456789:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA
+SESSION = config("SESSION")                   # your Telethon session string
+FORCESUB = config("FORCESUB", default="")    # aksjuatest
+AUTH = config("AUTH", cast=int, default=0)   # 8204831161
 # Validate critical credentials
 if not all([API_ID, API_HASH, BOT_TOKEN]):
     print("Missing critical credentials (API_ID/API_HASH/BOT_TOKEN). Exiting.")
