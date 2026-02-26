@@ -31,7 +31,7 @@ except BaseException:
 
 Bot = Client(
     "SaveRestricted",
-    bot_token = "8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA"
+    bot_token = "8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA",
     api_id=int(API_ID),
     api_hash=API_HASH
 )    
