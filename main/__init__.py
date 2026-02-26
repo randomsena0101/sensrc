@@ -1,3 +1,5 @@
+# Github.com/Vasusen-code
+
 import logging, sys
 from decouple import config
 from pyrogram import Client as PyroClient
@@ -16,17 +18,14 @@ logging.basicConfig(
 # ----------------------------
 # Load configuration safely
 # ----------------------------
-try:
-    API_ID = config("36905571", cast=int)
-    API_HASH = config("36677bbab05f148b95f91b13dbc57ea1")
-    BOT_TOKEN = config("8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA")
-    SESSION = config("SESSION")
-    FORCESUB = config("aksjuatest", default="")
-    AUTH = config("8204831161", cast=int)
-except Exception as e:
-    print(f"Configuration error: {e}")
-    sys.exit(1)
+API_ID = config("API_ID=36905571", cast=int)                # Your Telegram API_ID (number)
+API_HASH = config(API_HASH="36677bbab05f148b95f91b13dbc57ea1")                      # Your Telegram API_HASH (string)
+BOT_TOKEN = config(BOT_TOKEN="8737801641:AAE7QoFn2deJt2WfTjVDt10hJGQow0wwgHA")                    # Your Bot token from BotFather
+SESSION = config("SESSION")                        # Telethon session string for userbot
+FORCESUB = config(FORCESUB="aksjuatest", default="")          # Optional: channel to force subscription
+AUTH = config(AUTH=8204831161, cast=int, default=0)         # Optional: your Telegram user ID
 
+# Validate critical credentials
 if not all([API_ID, API_HASH, BOT_TOKEN]):
     print("Missing critical credentials (API_ID/API_HASH/BOT_TOKEN). Exiting.")
     sys.exit(1)
@@ -45,7 +44,7 @@ async def start_userbot():
         await userbot.start()
         print("Userbot started!")
     except Exception:
-        print("Userbot start failed! Check SESSION string.")
+        print("Userbot start failed! Check your SESSION string.")
         sys.exit(1)
 
 # ----------------------------
@@ -71,7 +70,7 @@ async def start_bot():
 # ----------------------------
 async def main():
     await asyncio.gather(start_userbot(), start_bot())
-    print("Both bot and userbot running!")
+    print("Both bot and userbot are running!")
     await asyncio.Future()  # Keeps event loop alive
 
 if __name__ == "__main__":
